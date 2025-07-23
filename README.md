@@ -16,9 +16,15 @@ This project implements:
 D:\moddedchadps4\shadPS4\
 ├── CMakeLists.txt                          # Main build configuration
 ├── README.md                               # This documentation
-├── externals/
-│   └── ffmpeg-core/                        # FFmpeg build location
-│       └── ffmpeg-YYYY-MM-DD-<hash>-full_build/
+├── ext/                                    # External dependencies (ShadPS4 pattern)
+│   └── ext-ffmpeg-core/                    # FFmpeg integration module
+│       ├── README.md                       # FFmpeg build documentation
+│       ├── ffmpeg.patch                    # ShadPS4-specific patches
+│       ├── build.sh                        # Linux/macOS build script
+│       ├── build.bat                       # Windows build script
+│       └── ffmpeg-build/                   # Built FFmpeg libraries (after build)
+│           ├── include/                    # FFmpeg headers
+│           └── lib/                        # FFmpeg libraries
 ├── src/
 │   ├── main.cpp                            # Main application entry point
 │   ├── sdl_window.cpp                      # SDL window placeholder
@@ -45,20 +51,37 @@ D:\moddedchadps4\shadPS4\
 - **Git**
 - **FFmpeg** (manually built for Windows with MSVC)
 
-### FFmpeg Setup
-1. Download FFmpeg source or use pre-built binaries from [BtbN/FFmpeg-Builds](https://github.com/BtbN/FFmpeg-Builds)
-2. Place FFmpeg build in `externals/ffmpeg-core/ffmpeg-YYYY-MM-DD-<hash>-full_build/`
-3. Ensure the following structure exists:
+### FFmpeg Setup (ext-ffmpeg-core)
+ShadPS4 uses the official `ext-ffmpeg-core` approach for FFmpeg integration:
+
+1. **Clone ext-ffmpeg-core** (if not already included):
+   ```bash
+   git clone https://github.com/shadps4-emu/ext-ffmpeg-core.git ext/ext-ffmpeg-core
    ```
-   externals/ffmpeg-core/ffmpeg-YYYY-MM-DD-<hash>-full_build/
+
+2. **Build FFmpeg** using the provided scripts:
+   ```bash
+   # Linux/macOS
+   cd ext/ext-ffmpeg-core
+   chmod +x build.sh
+   ./build.sh
+   
+   # Windows
+   cd ext\ext-ffmpeg-core
+   build.bat
+   ```
+
+3. **Verify build structure**:
+   ```
+   ext/ext-ffmpeg-core/ffmpeg-build/
    ├── include/
    │   ├── libavcodec/
    │   ├── libavutil/
    │   └── libswresample/
    └── lib/
-       ├── avcodec.lib
-       ├── avutil.lib
-       └── swresample.lib
+       ├── libavcodec.so/.dll/.dylib
+       ├── libavutil.so/.dll/.dylib
+       └── libswresample.so/.dll/.dylib
    ```
 
 ## 🏗️ Building
