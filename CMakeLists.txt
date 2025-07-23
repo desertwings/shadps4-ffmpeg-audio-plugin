@@ -5,13 +5,22 @@ project(shadPS4)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Set the FFmpeg core build path (update YYYY-MM-DD-<hash> accordingly)
-set(FFMPEG_PATH "${CMAKE_SOURCE_DIR}/externals/ffmpeg-core/ffmpeg-2024-01-15-git-full_build")
+# Set the FFmpeg core build path using ext-ffmpeg-core approach (ShadPS4 official pattern)
+set(EXT_FFMPEG_CORE_PATH "${CMAKE_SOURCE_DIR}/ext/ext-ffmpeg-core")
+set(FFMPEG_PATH "${EXT_FFMPEG_CORE_PATH}/ffmpeg-build")
 
-# Verify FFmpeg path exists
+# Verify ext-ffmpeg-core path exists
+if(NOT EXISTS "${EXT_FFMPEG_CORE_PATH}")
+    message(WARNING "ext-ffmpeg-core path not found: ${EXT_FFMPEG_CORE_PATH}")
+    message(STATUS "Please clone ext-ffmpeg-core repository:")
+    message(STATUS "  git clone https://github.com/shadps4-emu/ext-ffmpeg-core.git ext/ext-ffmpeg-core")
+endif()
+
+# Verify FFmpeg build exists
 if(NOT EXISTS "${FFMPEG_PATH}")
-    message(WARNING "FFmpeg path not found: ${FFMPEG_PATH}")
-    message(STATUS "Please ensure FFmpeg is built and placed in externals/ffmpeg-core/")
+    message(WARNING "FFmpeg build not found: ${FFMPEG_PATH}")
+    message(STATUS "Please build FFmpeg using ext-ffmpeg-core:")
+    message(STATUS "  cd ext/ext-ffmpeg-core && ./build.sh")
 endif()
 
 # Audio decoder sources (.sprx module)
